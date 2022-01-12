@@ -95,9 +95,11 @@ button {
   margin-top: 10px;
   color: white;
   min-height: 3rem;
+}
 
-
-
+#bandeau>img {
+  width: 300px;
+  height:400px;
 }
 
 .slideshow {
