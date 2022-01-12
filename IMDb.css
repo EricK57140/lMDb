@@ -75,12 +75,29 @@ button {
   margin-top: 2rem;
 } */
 
+.container {
+  margin-left: 11%;
+  margin-top: 2rem;
+}
+
 .container>#affiche>ul>li {
   list-style: circle;
   color: white;
 }
 
+.container>#affiche {
+  padding-left: 20px;
+  background-color: rgb(43, 46, 44);
+  border-radius: 0.6rem;
+  border: solid black 2px;
+  max-width: 50%;
+}
+
 #synopsis {
+  background-color: rgb(43, 46, 44);
+  border-radius: 0.6rem;
+  border: solid black 2px;
+  padding-left: 20px;
   margin-top: 20px;
   color: white;
   min-height: 4rem;
@@ -95,6 +112,11 @@ button {
   margin-top: 10px;
   color: white;
   min-height: 3rem;
+}
+
+#bandeau {
+  margin-left: 11%;
+  margin-top: 2rem;
 }
 
 #bandeau>img {
