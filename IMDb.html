@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <title>TP JQuery</title>
+    <link rel="stylesheet" href="IMDb.css" />
+</head>
+
+</head>
+
+<body>
+    <div class="flex">
+        <div class="slideshow">
+            <ul>
+                <li><img src="film1.JPG" /></li>
+                <li><img src="film2.JPG" /></li>
+                <li><img src="film3.JPG" /></li>
+            </ul>
+        </div>
+
+        <div class="menu">
+            <div class="recherche">
+                <input type="search" id="motCle">
+                <button class="btSearch"
+                    onclick="rechercheFilm(document.getElementById('motCle').value)">Recherche</button>
+            </div>
+            <button
+                style="background:rgb(98, 247, 142);border-radius:0.5rem;padding:10px;border:solid black 1px;width:90px;"
+                onclick="proprietesFilm(ref, 1)">Description</button>
+            <button class="btn"
+                style="background:rgb(98, 247, 142);border-radius:0.5rem;padding:10px;border:solid black 1px;width:90px;"
+                onClick="proprietesFilm(ref, 2)">Synopsis</button>
+            <button class="btn"
+                style="background:rgb(98, 247, 142);border-radius:0.5rem;padding:10px;border:solid black 1px;width:90px;"
+                onClick="proprietesFilm(ref, 3)">Pas Click !</button>
+        </div>
+        <div class="container">
+            <div id="vignette"></div>
+            <div id="affiche"></div>
+            <div id="synopsis"></div>
+        </div>
+        <div></div>
+
+
+</body>
+
+</html>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script>
+
+    $(function () {
+        setInterval(function () {
+            $(".slideshow ul").animate({ marginLeft: -583 }, 1500, function () {
+                $(this).css({ marginLeft: 0 }).find("li:last").after($(this).find("li:first"));
+            })
+        }, 3500);
+    });
+
+
+    function rechercheTitre(titre) {
+
+        // on définit les paramètres d'accès à l'API IMDb
+        var settings = {
+            "url": titre,
+            "method": "GET",
+            "timeout": 0,
+        }
+
+        // on lance la requête AJAX
+        $.ajax(settings).done(function (response) {
+            // console.log(response);
+            traitement(response);
+        });
+        return;
+    }
+
+    // on parse la réponse
+    function traitement(reponse) {
+        console.log('titre : ' + reponse.title + ' - ' + reponse.releaseDate);
+        console.log('durée : ' + reponse.runtimeStr);
+        console.log('genre : ' + reponse.genres);
+        console.log('réalisateur : ' + reponse.directors);
+        for (const element of reponse.actorList) {
+            console.log(element.name);
+        }
+
+        var newDiv = document.createElement("div");
+        newDiv.id = "fiche";
+        newDiv.class = "fiche";
+        // var newContent = document.createTextNode('Hi there and greetings!');
+        newDiv.appendChild(premierEcran);
+
+        return;
+    }
+
+    let boutonVert = false;
+    let existeFiche = false;
+    let existeSynopsis = false;
+    let ref = "";
+    let apiKey = "k_hgwzc1fp";
+    // let apiKey = "k_mc792s9t";
+
+    function rechercheFilm(keyword) {
+
+        ref = "";
+
+        let requete = 'https://imdb-api.com/fr/API/SearchMovie/' + apiKey + '/' + keyword;
+        appelAPI(requete, 0);
+
+        return;
+    }
+
+    function proprietesFilm(id, num) {
+
+        if (id == "") { return }
+        boutonVert = true;
+
+        requete = 'https://imdb-api.com/fr/API/Title/' + apiKey + '/' + id;
+        appelAPI(requete, num);
+
+        boutonVert = false;
+        console.log("c'est bon")
+
+        return;
+    }
+
+    function appelAPI(url, num) {
+
+        console.log(url);
+
+        // on définit les paramètres d'accès à l'API
+        var settings = {
+            "url": url,
+            "method": "GET",
+            "timeout": 0,
+        }
+
+        // on lance la requête AJAX
+        $.ajax(settings).done(function (response) {
+
+            // si on appuie sur un des boutons verts
+            if (ref != "") {
+                switch (num) {
+                    case 1:
+                        creationFiche(response);
+                        break;
+                    case 2:
+                        creationSynopsis(response);
+                        break;
+                    case 3:
+                        break;
+                }
+                return;
+            }
+
+            // on récupère l'id du film
+            if (num == 0 && ref == "") {
+                for (const element of response.results) {
+                    if (ref == "") { ref = element.id }
+                }
+            }
+        });
+
+        return;
+    }
+
+    // on parse la réponse et on crée un bloc html
+    function creationSynopsis(reponse) {
+
+        // on supprime le résumé
+        if (existeSynopsis) {
+            var element = document.getElementById("synopsis");
+            while (element.firstChild) {
+                element.removeChild(element.firstChild);
+            }
+            existeSynopsis = false;
+        }
+
+        // on crée la mise en forme et on affiche
+        let bloc2 = document.getElementById("synopsis");
+        let resume1 = document.createElement("u");
+        resume1.innerHTML = "Synopsis :";
+        bloc2.appendChild(resume1);
+        let resume2 = document.createElement("p");
+        resume2.innerHTML = reponse.plotLocal;
+        bloc2.appendChild(resume2);
+
+        existeSynopsis = true;
+        return;
+    }
+
+    // on parse la réponse et on crée un bloc html
+    function creationFiche(reponse) {
+
+        // on détruit la liste
+        if (existeFiche) {
+            var element = document.getElementById("affiche");
+            while (element.firstChild) {
+                element.removeChild(element.firstChild);
+            }
+            existeFiche = false;
+        }
+
+        // on crée la mise en forme
+        let liste = document.createElement("ul");
+        liste.id = "liste";
+        let bloc1 = document.getElementById("affiche");
+        bloc1.appendChild(liste);
+
+        let critere = document.createElement("li");
+        critere.innerHTML = 'Titre : ' + reponse.title;
+        liste.appendChild(critere);
+
+        critere = document.createElement("li");
+        critere.innerHTML = 'Date de sortie : ' + reponse.releaseDate;
+        liste.appendChild(critere);
+
+        critere = document.createElement("li");
+        critere.innerHTML = 'Durée : ' + reponse.runtimeStr;
+        liste.appendChild(critere);
+
+        critere = document.createElement("li");
+        critere.innerHTML = 'Genre : ' + reponse.genres;
+        liste.appendChild(critere);
+
+        critere = document.createElement("li");
+        critere.innerHTML = 'Réalisateur : ' + reponse.directors;
+        liste.appendChild(critere);
+
+        critere = document.createElement("li");
+        critere.innerHTML = 'Acteurs connus : ' + reponse.stars;
+        liste.appendChild(critere);
+
+        existeFiche = true;
+
+        return;
+    }
+
+</script>
