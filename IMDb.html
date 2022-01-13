@@ -124,12 +124,15 @@
                 return;
             }
 
-            // on récupère l'identifiant du film
             if (choix == 0) {
-                ref = "";
+                
+                // on récupère une éventuelle erreur
                 statut = response.errorMessage;
                 if (statut != "") { return }
                 console.log(statut);
+
+                // on récupère l'identifiant du film
+                ref = "";
                 for (const element of response.results) {
                     if (ref == "") { 
                         ref = element.id;
