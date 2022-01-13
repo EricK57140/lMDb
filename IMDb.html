@@ -23,11 +23,11 @@
             <div class="recherche">
                 <input type="search" id="motCle">
                 <button class="btSearch"
-                    onclick="rechercheFilm(document.getElementById('motCle').value)">Recherche</button>
+                    onclick="rechercheFilm(document.getElementById('motCle').value, 0)">Recherche</button>
             </div>
-            <button onclick="proprietesFilm(ref, 1)">Description</button>
-            <button onClick="proprietesFilm(ref, 2)">Synopsis</button>
-            <button onClick="proprietesFilm(ref, 3)">Pas Click !</button>
+            <button onclick="rechercheFilm(ref, 1)">Description</button>
+            <button onClick="rechercheFilm(ref, 2)">Synopsis</button>
+            <button onClick="rechercheFilm(ref, 3)">Pas Click !</button>
         </div>
         <div class="container">
             <div id="vignette"></div>
@@ -58,42 +58,43 @@
     });
 
     // on définit les variables
-    let boutonVert = false;
     let existeFiche = false;
     let existeSynopsis = false;
     let existeBandeau = false;
     let ref = "";
+    let requete = "";
+    let status = "";
 
     //let apiKey = "k_hgwzc1fp";
-    let apiKey = "k_mc792s9t";
+    //let apiKey = "k_mc792s9t";
+    let apiKey = "k_0fv2a40g";
 
     // on recherche un film à partir d'un mot-clé
-    function rechercheFilm(keyword) {
+    function rechercheFilm(keyword, choix) {
 
-        ref = "";
+        // on récupère l'identifiant du film
+        if (choix == 0 || ref == "") {
+            requete = 'https://imdb-api.com/fr/API/SearchMovie/' + apiKey + '/' + keyword;
+            appelAPI(requete, 0);
+        }
 
-        let requete = 'https://imdb-api.com/fr/API/SearchMovie/' + apiKey + '/' + keyword;
-        appelAPI(requete, 0);
+        // on affiche l'erreur renvoyée par l'API
+        if (status != "") { document.getElementById("bandeau").innerHTML = 'Erreur ! Le serveur a répondu : ' + statut }
 
-        return;
-    }
+        // on quitte si l'identifiant n'a pu être récupéré
+        if (ref == "") { return } else { console.log("L'identifiant du film est : " + ref) }
 
-    // on va rechercher les informations du film
-    function proprietesFilm(id, num) {
-
-        if (id == "") { return }
-        boutonVert = true;
-
-        requete = 'https://imdb-api.com/fr/API/Title/' + apiKey + '/' + id;
-        appelAPI(requete, num);
-
-        boutonVert = false;
+        // on récupère les infos du film
+        if (choix > 0) {
+            requete = 'https://imdb-api.com/fr/API/Title/' + apiKey + '/' + ref;
+            appelAPI(requete, choix);
+        }
 
         return;
     }
 
     // on prépare une requête AJAX pour contacter l'API
-    function appelAPI(url, num) {
+    function appelAPI(url, choix) {
 
         // on définit les paramètres d'accès à l'API
         var settings = {
@@ -108,8 +109,8 @@
         $.ajax(settings).done(function (response) {
 
             // on sélectionne la fonction idoine
-            if (ref != "") {
-                switch (num) {
+            if (choix > 0 && ref != "") {
+                switch (choix) {
                     case 1:
                         creationFiche(response);
                         break;
@@ -124,9 +125,15 @@
             }
 
             // on récupère l'identifiant du film
-            if (num == 0 && ref == "") {
+            if (choix == 0) {
+                ref = "";
+                statut = response.errorMessage;
+                if (statut != "") { return }
+                console.log(statut);
                 for (const element of response.results) {
-                    if (ref == "") { ref = element.id }
+                    if (ref == "") { 
+                        ref = element.id;
+                    }
                 }
             }
         });
