@@ -11,7 +11,6 @@ html {
 }
 
 body {
-
   margin: 50px;
   /*display: flex;
   flex-direction: row;*/
@@ -30,11 +29,6 @@ body {
   border-radius: 0.6rem;
   border: solid black 2px;
   margin-top: 4rem;
-
-
-
-
-
 }
 
 .menu>.recherche {
@@ -46,24 +40,27 @@ body {
 
 .menu>.recherche>input {
   background-color: white;
-  width: 12rem;
+  width: 13rem;
   padding-left: 5px;
   height: 2.5rem;
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
 }
 
 .menu>.recherche>.btSearch {
-
   width: 8rem;
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
-  font-weight: 600;
+  font-weight: 800;
   margin-top: auto;
+}
 
+.menu>.recherche>.btSearch:hover {
+  background-color: rgb(12, 163, 35);
+  color: white;
 }
 
 #displayfilm {
-
   width: 31rem;
   height: 2rem;
   font-size: 1.5rem;
@@ -78,21 +75,23 @@ body {
   padding: 1rem;
 }
 
-
 button {
-
   width: 6rem;
   height: 2.5rem;
-  font-family: Arial, Helvetica, sans-serif;
+  /*font-family: Arial, Helvetica, sans-serif;*/
+  font-family: Garamond, serif;
   text-align: center;
   font-weight: 600;
   background: rgb(98, 247, 142);
   border-radius: 0.5rem;
   padding: 10px;
   border: solid black 1px;
-
 }
 
+button:hover {
+  background-color: rgb(12, 163, 35);
+  color: white;
+}
 
 /* .btSearch .container {
   margin-left: 11%;
@@ -138,7 +137,6 @@ button {
   min-height: 3rem;
 }
 
-
 #vignette {
   margin: 0 auto;
   height: 200px;
@@ -152,9 +150,7 @@ button {
   color: white;
   /* min-height: 4rem; */
   /* max-width: 50%; */
-
 }
-
 
 #bandeau {
   margin-left: 11%;
@@ -167,11 +163,10 @@ button {
 }
 
 .slideshow {
-
   margin-left: auto;
   margin-right: auto;
   width: 583px;
-  height: 400px;
+  height: 300px;
   overflow: hidden;
   /* border: 3px solid #F2F2F2; */
 }
