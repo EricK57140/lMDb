@@ -80,7 +80,7 @@ body {
 
 
 button {
-  /* margin: 10px; */
+
   width: 6rem;
   height: 2.5rem;
   font-family: Arial, Helvetica, sans-serif;
@@ -222,4 +222,21 @@ img {
 
 .show {
   visibility: hidden;
+}
+
+
+.desy {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+
+.desy>button {
+  margin: 4rem 9rem;
+  width: 12rem;
+  height: 4.5rem;
+  font-size: 2rem;
+
 }

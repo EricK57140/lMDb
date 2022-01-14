@@ -29,35 +29,25 @@
                             onclick="rechercheFilm(document.getElementById('motCle').value);afficherFilm()">Recherche</button>
                     </div>
                 </div>
-                <div id="displayfilm">
+                <div id="displayfilm">Film selectionné:
                 </div>
             </div>
         </div>
 
-    </div>
-    <div class="flex2">
 
+        <div class="desy">
+            <button onclick="proprietesFilm(ref, 1)"> Description</button>
+            <button onClick="proprietesFilm(ref, 2)">Synopsis</button>
+            <button onClick="proprietesFilm(ref, 3)">Pas Click !</button>
+        </div>
 
-        <button onclick="proprietesFilm(ref, 1)">
-
-
-            Description
-
-        </button>
-
-
-        <button onClick="proprietesFilm(ref, 2)">Synopsis</button>
-        <button onClick="proprietesFilm(ref, 3)">Pas Click !</button>
-
+        <div class="container">
+            <div id="vignette"></div>
+            <div id="affiche"></div>
+            <div id="synopsis"></div>
+        </div>
     </div>
 
-    <div class="container">
-        <div id="vignette"></div>
-        <div id="affiche"></div>
-        <div id="synopsis"></div>
-    </div>
-    </div>
-    </div>
 
 </body>
 
@@ -128,7 +118,6 @@
         appelAPI(requete, 0);
 
         return;
-
     }
 
     function proprietesFilm(id, num) {
