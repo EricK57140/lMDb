@@ -7,10 +7,8 @@
     <link rel="stylesheet" href="IMDb.css" />
 </head>
 
-</head>
-<!-- github test retour salut ca va génial et toi -->
-
 <body>
+
     <div class="flex2">
         <div class="flex">
             <div class="slideshow">
@@ -33,31 +31,23 @@
             <div class="desy">
                 <button onclick="rechercheFilm(1)"> Description</button>
                 <button onClick="rechercheFilm(2)">Synopsis</button>
-                <button onClick="rechercheFilm(3)">Pas Click !</button>
+                <button onClick="rechercheFilm(3)">Similaires</button>
             </div>
             </div> 
         </div>
 
-        <div>
-            <div id="displayfilm">Film selectionné:
-            </div> 
+        <div class="partieDroite">
+            <div id="displayfilm">Film sélectionné:</div> 
 
-
-
-  
-        <div class="container">
-            <!-- <div id="vignette"></div> -->
-            <div id="affiche"></div>
-            <div id="synopsis"></div>
-        </div>
-
-
-
-
-
+            <div class="container">
+                <!-- <div id="vignette"></div> -->
+                <div id="affiche"></div>
+                <div id="synopsis"></div>
+            </div>
         </div>              
-        <div id="bandeau"></div>
+        
     </div>
+    <div id="bandeau"></div>
 
 
 </body>
@@ -86,8 +76,8 @@
     let requete = "";
     let status = "";
 
-    let apiKey = "k_hgwzc1fp";
-    //let apiKey = "k_mc792s9t";
+    //let apiKey = "k_hgwzc1fp";
+    let apiKey = "k_mc792s9t";
     //let apiKey = "k_0fv2a40g";
 
     // on recherche un film à partir d'un mot-clé
@@ -179,7 +169,7 @@
         let x = 0;
         let picture = [];
         for (const element of reponse.similars) {
-            if (x < 3) {
+            if (x < 4) {
                 picture[x] = element.image;
             }
             x++;
@@ -208,6 +198,10 @@
         let balise6 = document.createElement("img");
         balise6.src = picture[2];
         bloc3.appendChild(balise6);
+
+        let balise7 = document.createElement("img");
+        balise7.src = picture[3];
+        bloc3.appendChild(balise7);
 
         existeBandeau = true;
         return;
